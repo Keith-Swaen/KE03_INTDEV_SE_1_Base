@@ -78,14 +78,12 @@ namespace KE03_INTDEV_SE_1_Base.Pages
                 return RedirectToPage();
             }
 
-            // Maak nieuwe order aan
             var nieuweOrder = new Order
             {
                 OrderDate = DateTime.Now,
-                CustomerId = 1 // vaste klantid (aangezien je geen login hebt)
+                CustomerId = 1 
             };
 
-            // Voeg producten toe met juiste hoeveelheden
             foreach (var item in CartItems)
             {
                 var productFromDb = _productRepository.GetProductById(item.Product.Id);
@@ -101,8 +99,6 @@ namespace KE03_INTDEV_SE_1_Base.Pages
             try
             {
                 _orderRepository.AddOrder(nieuweOrder);
-
-                // Leeg winkelwagen
                 CartItems.Clear();
                 SaveCart();
 

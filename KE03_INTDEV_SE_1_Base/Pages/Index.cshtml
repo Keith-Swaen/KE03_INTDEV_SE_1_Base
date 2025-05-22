@@ -3,39 +3,121 @@
 @{
     ViewData["Title"] = "Home page";
 }
-<div class="alert-info mt-5">  
-    <p class="p-1">
-        Dit project kun je gebruiken als startpunt voor de individuele inleveropdracht: <a href="https://moodle.zuyd.nl/mod/resource/view.php?id=1262065">KE03_INTDEV_SE_1</a>
 
-        <ul>
-            <li>Wat ga je maken: Een gebruiksvriendelijk online bestelsysteem voor een klant om producten te bestellen.</li>
-            <li>
-                Hoe ga je dit maken?<br />
-                - Individuele inleveropdracht.<br/>
-                - Pas de principes van HCI toe (bijv. Paper prototyping, design principles etc…)<br />
-                - Maak gebruik van: .NET core razor pages met bijbehorende zaken zoals, html, css, js, bootstrap, jquery<br />
-                - Maak gebruik van git en github voor source control van jouw code<br />
-            </li>
-            <li>
-                Je krijgt een dal (data access layer) meegeleverd. Qua inhoud is die niet perfect gevuld, maar qua structuur biedt die voldoende om een mooi bestel systeem te kunnen maken. <br /> 
-                Maar mis je iets, je bent vrij om alles naar wens aan te passen! Ben creatief!
-            </li>
+<style>
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        background-color: #f9fbfd;
+        color: #334e68;
+    }
+    a {
+        color: #ff6f61;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    h1, h4, h5 {
+        font-weight: 600;
+    }
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgb(0 0 0 / 0.1);
+        background: white;
+    }
+    .card-header {
+        background: #1c3a6b;
+        color: white;
+        font-weight: 700;
+        border-radius: 12px 12px 0 0;
+        font-size: 1.1rem;
+    }
+    .table thead th {
+        border-bottom: 2px solid #dee2e6;
+        color: #2a4365;
+        font-weight: 600;
+    }
+    .table tbody tr:hover {
+        background-color: #f0f4f8;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+    }
+    #searchInput {
+        border-radius: 30px;
+        padding-left: 1.2rem;
+        border: 1.8px solid #dbe2ef;
+        width: 220px;
+        transition: border-color 0.3s ease;
+    }
+    #searchInput:focus {
+        border-color: #ff6f61;
+        outline: none;
+        box-shadow: 0 0 8px #ff6f61aa;
+    }
+    ul {
+        padding-left: 1.3rem;
+    }
+</style>
+
+<div class="container my-5">
+
+    <header class="mb-4">
+        <h1 class="mb-2">Online Bestelsysteem</h1>
+        <p class="text-muted fs-5">Startpunt voor je individuele inleveropdracht 
+            <a href="https://moodle.zuyd.nl/mod/resource/view.php?id=1262065" target="_blank">KE03_INTDEV_SE_1</a>
+        </p>
+    </header>
+
+    <section class="mb-5 p-4 bg-white rounded card">
+        <h4 class="mb-3">Wat ga je maken?</h4>
+        <ul class="mb-0 fs-6" style="color: #486581;">
+            <li>Een gebruiksvriendelijk online bestelsysteem voor klanten.</li>
+            <li>Individuele opdracht met toepassing van HCI-principes (zoals paper prototyping, design principles).</li>
+            <li>Gebruik van .NET Core Razor Pages, HTML, CSS, JS, Bootstrap en jQuery.</li>
+            <li>Versiebeheer met Git en GitHub.</li>
+            <li>Data access layer is meegeleverd, pas deze gerust aan voor jouw project.</li>
         </ul>
-    </p>
+    </section>
+
+    <section class="card shadow-sm border-0">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Klanten en Aantal Orders</h5>
+            <input id="searchInput" type="text" class="form-control form-control-sm" placeholder="Zoek klant..." onkeyup="filterTable()" />
+        </div>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Klant</th>
+                        <th>Aantal Orders</th>
+                    </tr>
+                </thead>
+                <tbody id="customersTableBody">
+                    @foreach (var c in Model.Customers)
+                    {
+                        <tr>
+                            <td>@c.Name</td>
+                            <td>@c.Orders.Count</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
 </div>
 
-<table class="table mt-4"> 
-    <thead>
-        <tr>
-            <th>Klant</th>
-            <th>Aantal Orders</th>
-        </tr>
-    </thead>
-    @foreach (var c in Model.Customers)
-    {        
-        <tr>
-            <td>@Html.DisplayName(c.Name)</td>
-            <td>@Html.DisplayName(c.Orders.Count.ToString())</td>           
-        </tr>
-    }
-</table>
+@section Scripts {
+    <script>
+        function filterTable() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toLowerCase();
+            const rows = document.querySelectorAll("#customersTableBody tr");
+
+            rows.forEach(row => {
+                const text = row.cells[0].textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? "" : "none";
+            });
+        }
+    </script>
+}

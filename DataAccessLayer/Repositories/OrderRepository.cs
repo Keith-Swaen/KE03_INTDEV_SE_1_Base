@@ -1,0 +1,52 @@
+﻿using DataAccessLayer.Interfaces;
+using DataAccessLayer.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace DataAccessLayer.Repositories
+{
+    public class OrderRepository : IOrderRepository
+    {
+        private readonly MatrixIncDbContext _context;
+
+        public OrderRepository(MatrixIncDbContext context)
+        {
+            _context = context;
+        }
+
+        public IEnumerable<Order> GetAllOrders()
+        {
+            return _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.Products)
+                .ToList();
+        }
+
+        public Order? GetOrderById(int id)
+        {
+            return _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.Products)
+                .FirstOrDefault(o => o.Id == id);
+        }
+
+        public void AddOrder(Order order)
+        {
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+        }
+
+        public void UpdateOrder(Order order)
+        {
+            _context.Orders.Update(order);
+            _context.SaveChanges();
+        }
+
+        public void DeleteOrder(Order order)
+        {
+            _context.Orders.Remove(order);
+            _context.SaveChanges();
+        }
+    }
+}

@@ -1,0 +1,120 @@
+@page
+@model KE03_INTDEV_SE_1_Base.Pages.CartModel
+@{
+    ViewData["Title"] = "Winkelmand";
+}
+
+<h1 class="mb-4 text-primary">Jouw Winkelmand</h1>
+
+@if (!Model.CartItems.Any())
+{
+    <div class="alert alert-warning text-center fs-5">Je winkelmand is leeg.</div>
+}
+else
+{
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table align-middle mb-0 bg-white">
+            <thead class="bg-light">
+                <tr>
+                    <th scope="col" style="min-width: 200px;">Product</th>
+                    <th scope="col">Beschrijving</th>
+                    <th scope="col" style="width: 120px;">Aantal</th>
+                    <th scope="col" style="width: 140px;">Prijs per stuk</th>
+                    <th scope="col" style="width: 140px;">Subtotaal</th>
+                    <th scope="col" style="width: 80px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CartItems)
+                {
+                    <tr class="align-middle" style="transition: background-color 0.15s ease;">
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                @* Optioneel: Productafbeelding als die beschikbaar is *@
+                                @* <img src="@item.Product.ImageUrl" alt="@item.Product.Name" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;" /> *@
+                                <div>
+                                    <h6 class="mb-1 fw-bold text-truncate" style="max-width: 200px;">@item.Product.Name</h6>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-muted" style="max-width: 300px;">@item.Product.Description</td>
+                        <td>
+                            <form method="post" asp-page-handler="UpdateQuantity" class="d-flex align-items-center gap-2">
+                                <input type="hidden" name="productId" value="@item.Product.Id" />
+                                <input type="number" name="newQuantity" value="@item.Quantity" min="1" class="form-control form-control-sm" style="width: 70px;" />
+                                <button type="submit" class="btn btn-sm btn-outline-primary px-3">Update</button>
+                            </form>
+                        </td>
+                        <td class="fw-semibold">€ @string.Format("{0:0.00}", item.Product.Price)</td>
+                        <td class="fw-semibold text-success">€ @string.Format("{0:0.00}", item.Product.Price * item.Quantity)</td>
+                        <td>
+                            <form method="post" asp-page-handler="RemoveItem">
+                                <input type="hidden" name="productId" value="@item.Product.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Verwijder product">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5zM3 6v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V6H3z"/>
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V4H2.5a1 1 0 1 1 0-2H5V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h2.5a1 1 0 0 1 1 1zM6 2v1h4V2H6z"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-end mt-4">
+        <div class="card shadow-sm" style="max-width: 350px; width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title fw-bold">Totaal</h5>
+                <p class="fs-4 text-success fw-semibold">€ @string.Format("{0:0.00}", Model.CartItems.Sum(i => i.Product.Price * i.Quantity))</p>
+                <form method="post" asp-page-handler="Checkout">
+                    <button type="submit" class="btn btn-success btn-lg w-100">Bestellen</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+    @if (TempData["Message"] != null)
+    {
+        <div id="successToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" style="display:none; background-color:#198754; color:white;">
+            <div class="d-flex">
+                <div class="toast-body">@TempData["Message"]</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Sluiten"></button>
+            </div>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div id="errorToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" style="display:none; background-color:#dc3545; color:white;">
+            <div class="d-flex">
+                <div class="toast-body">@TempData["Error"]</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Sluiten"></button>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            var successToastEl = document.getElementById('successToast');
+            if (successToastEl && successToastEl.textContent.trim().length > 0) {
+                successToastEl.style.display = 'flex';
+                var successToast = new bootstrap.Toast(successToastEl, { delay: 3000 });
+                successToast.show();
+            }
+
+            var errorToastEl = document.getElementById('errorToast');
+            if (errorToastEl && errorToastEl.textContent.trim().length > 0) {
+                errorToastEl.style.display = 'flex';
+                var errorToast = new bootstrap.Toast(errorToastEl, { delay: 3000 });
+                errorToast.show();
+            }
+        });
+    </script>
+}

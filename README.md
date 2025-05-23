@@ -8,8 +8,24 @@ Ik heb geprobeerd mijn werk terug te halen via `git reflog` en `git fsck`. Dit w
 
 ---
 
-**Let op:** Bij het plaatsen van een nieuwe bestelling zie je direct de juiste orderinformatie terug.
+## Project opstarten
+
+1. Open een terminal in de rootfolder van de oplossing (de folder waar je `.sln` bestand staat).
+2. Voer het volgende uit om alle NuGet-pakketten van alle projecten te herstellen:
+    ```bash
+    dotnet restore
+    ```
+3. Navigeer naar de projectmap waar de webapplicatie staat:
+    ```bash
+    cd KE03_INTDEV_SE_1_Base
+    ```
+4. Start de applicatie:
+    ```bash
+    dotnet run
+    ```
+5. Open je browser en ga naar het adres dat in de console wordt getoond.
+
 
 ---
 
-*Keith Swaen*  
+*Keith Swaen*

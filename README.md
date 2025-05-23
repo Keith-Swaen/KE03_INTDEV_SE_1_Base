@@ -10,7 +10,7 @@ Ik heb geprobeerd mijn werk terug te halen via `git reflog` en `git fsck`. Dit w
 
 ## Project opstarten
 
-1. Open een terminal in de rootfolder van de oplossing (de folder waar je `.sln` bestand staat).
+1. Open een terminal in de rootfolder van de oplossing.
 2. Voer het volgende uit om alle NuGet-pakketten van alle projecten te herstellen:
     ```bash
     dotnet restore

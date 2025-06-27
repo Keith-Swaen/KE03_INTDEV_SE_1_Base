@@ -16,14 +16,16 @@ namespace KE03_INTDEV_SE_1_Base.Pages
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
         private readonly ILogger<CartModel> _logger;
+        private readonly ICustomerRepository _customerRepository;
 
         public List<CartItem> CartItems { get; set; } = new();
 
-        public CartModel(IOrderRepository orderRepository, IProductRepository productRepository, ILogger<CartModel> logger)
+        public CartModel(IOrderRepository orderRepository, IProductRepository productRepository, ILogger<CartModel> logger, ICustomerRepository customerRepository)
         {
             _orderRepository = orderRepository;
             _productRepository = productRepository;
             _logger = logger;
+            _customerRepository = customerRepository;
         }
 
         public void OnGet()
@@ -97,13 +99,23 @@ namespace KE03_INTDEV_SE_1_Base.Pages
                 return RedirectToPage();
             }
 
+            // AVG Compliance: Controleer of klant toestemming heeft gegeven
+            var customer = _customerRepository.GetCustomerById(1); // Hardcoded voor demo
+            if (customer == null || customer.ConsentWithdrawn)
+            {
+                _logger.LogWarning("Checkout geprobeerd zonder geldige AVG toestemming. KlantId: 1");
+                TempData["Error"] = "Je moet eerst toestemming geven voor het verwerken van je gegevens. Bekijk onze privacyverklaring.";
+                return RedirectToPage();
+            }
+
             _logger.LogInformation("Starting checkout process. Items in cart: {ItemCount}, Total items: {TotalItems}", 
                 CartItems.Count, CartItems.Sum(i => i.Quantity));
 
             var nieuweOrder = new Order
             {
                 OrderDate = DateTime.Now,
-                CustomerId = 1
+                CustomerId = 1,
+                DataRetentionUntil = DateTime.Now.AddYears(7) // 7 years for legal compliance
             };
 
             foreach (var item in CartItems)

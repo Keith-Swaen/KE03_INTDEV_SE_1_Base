@@ -10,34 +10,111 @@
     <div class="card shadow-sm">
         <div class="card-body">
             <p class="lead">
-                Bij onze website nemen we jouw privacy serieus. Deze privacyverklaring legt uit welke gegevens we verzamelen, hoe we ze gebruiken en welke rechten jij hebt.
+                Bij onze website nemen we jouw privacy serieus. Deze privacyverklaring legt uit welke gegevens we verzamelen, hoe we ze gebruiken en welke rechten jij hebt volgens de AVG (GDPR).
             </p>
 
             <h3 class="mt-4">Welke gegevens verzamelen wij?</h3>
             <ul>
                 <li>Persoonlijke gegevens die je vrijwillig verstrekt, zoals naam, e-mail en adres.</li>
+                <li>Bestellingsgegevens inclusief producten, aantallen en betalingsinformatie.</li>
                 <li>Technische gegevens zoals IP-adres, browserinformatie en gebruiksgegevens via cookies.</li>
             </ul>
 
             <h3 class="mt-4">Hoe gebruiken wij jouw gegevens?</h3>
             <ul>
-                <li>Om onze diensten te leveren en te verbeteren.</li>
+                <li>Om onze diensten te leveren en bestellingen te verwerken.</li>
                 <li>Voor communicatie over je account of bestellingen.</li>
-                <li>Voor het analyseren van websitegebruik en optimalisatie.</li>
+                <li>Voor wettelijke verplichtingen (boekhouding, belastingen).</li>
+            </ul>
+
+            <h3 class="mt-4">Toestemming (Consent)</h3>
+            <p>Wij vragen expliciete toestemming voor het verwerken van je gegevens. Je kunt je toestemming op elk moment intrekken.</p>
+            <ul>
+                <li><strong>Noodzakelijke gegevens:</strong> Voor het verwerken van bestellingen (7 jaar bewaartermijn)</li>
+                <li><strong>Marketing gegevens:</strong> Voor nieuwsbrieven en aanbiedingen (tot intrekking)</li>
+            </ul>
+
+            <h3 class="mt-4">Bewaartermijn</h3>
+            <p>We bewaren je gegevens niet langer dan noodzakelijk:</p>
+            <ul>
+                <li><strong>Bestellingsgegevens:</strong> 7 jaar (wettelijke verplichting)</li>
+                <li><strong>Klantgegevens:</strong> Tot 2 jaar na laatste activiteit</li>
+                <li><strong>Marketing gegevens:</strong> Tot intrekking van toestemming</li>
             </ul>
 
             <h3 class="mt-4">Met wie delen wij jouw gegevens?</h3>
             <p>Wij delen jouw gegevens nooit zonder jouw toestemming, behalve als dit wettelijk verplicht is of met betrouwbare partners die ons helpen bij het leveren van onze diensten.</p>
 
-            <h3 class="mt-4">Jouw rechten</h3>
+            <h3 class="mt-4">Jouw AVG rechten</h3>
             <ul>
-                <li>Inzien en corrigeren van je gegevens.</li>
-                <li>Verzoek om verwijdering van je gegevens.</li>
-                <li>Bezwaar maken tegen bepaalde verwerkingen.</li>
+                <li><strong>Inzage:</strong> Je hebt recht om te zien welke gegevens we van je hebben.</li>
+                <li><strong>Correctie:</strong> Je kunt onjuiste gegevens laten corrigeren.</li>
+                <li><strong>Verwijdering:</strong> Je kunt verzoeken om je gegevens te laten verwijderen.</li>
+                <li><strong>Beperking:</strong> Je kunt de verwerking van je gegevens beperken.</li>
+                <li><strong>Portabiliteit:</strong> Je kunt je gegevens in een gestructureerd formaat ontvangen.</li>
+                <li><strong>Bezwaar:</strong> Je kunt bezwaar maken tegen bepaalde verwerkingen.</li>
+                <li><strong>Intrekking toestemming:</strong> Je kunt je toestemming op elk moment intrekken.</li>
             </ul>
 
+            <h3 class="mt-4">Data Protection Officer</h3>
+            <p>Voor vragen over je privacy of deze verklaring kun je contact opnemen met onze Data Protection Officer.</p>
+
             <h3 class="mt-4">Contact</h3>
-            <p>Heb je vragen over je privacy of deze verklaring? Neem dan contact met ons op via Minecraft</a>.</p>
+            <p>Heb je vragen over je privacy of deze verklaring? Neem dan contact met ons op via:</p>
+            <ul>
+                <li>E-mail: privacy@matrixinc.com</li>
+                <li>Telefoon: +31 20 123 4567</li>
+                <li>Adres: Privacyweg 123, 1234 AB Amsterdam</li>
+            </ul>
+
+            <div class="alert alert-info mt-4">
+                <h5>Laatste update</h5>
+                <p class="mb-0">Deze privacyverklaring is voor het laatst bijgewerkt op 28-06-2025.</p>
+            </div>
+
+            <!-- AVG Toestemming Beheer -->
+            <div class="card mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Toestemming beheren</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-page-handler="GiveConsent">
+                        <div class="mb-3">
+                            <label for="consentType" class="form-label">Type toestemming:</label>
+                            <select id="consentType" name="ConsentType" class="form-select">
+                                <option value="Necessary">Noodzakelijk (voor bestellingen)</option>
+                                <option value="Marketing">Marketing (nieuwsbrieven, aanbiedingen)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="consentGiven" name="ConsentGiven" value="true">
+                                <label class="form-check-label" for="consentGiven">
+                                    Ik geef toestemming voor het verwerken van mijn gegevens
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Toestemming bijwerken</button>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <form method="post" asp-page-handler="RequestDeletion" onsubmit="return confirm('Weet je zeker dat je je gegevens wilt laten verwijderen? Dit kan niet ongedaan worden gemaakt.');">
+                        <div class="alert alert-warning">
+                            <h6>Gegevensverwijdering aanvragen</h6>
+                            <p class="mb-2">Je kunt verzoeken om al je persoonlijke gegevens te laten verwijderen. Dit proces duurt maximaal 30 dagen.</p>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Verzoek tot gegevensverwijdering</button>
+                    </form>
+                </div>
+            </div>
+
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success mt-3">
+                    @TempData["Message"]
+                </div>
+            }
         </div>
     </div>
 </div>

@@ -21,6 +21,13 @@ namespace DataAccessLayer.Models
 
         public bool Active { get; set; }
 
+        // AVG Compliance velden
+        public DateTime? ConsentDate { get; set; }
+        public string? ConsentType { get; set; } // "Marketing", "Necessary"
+        public DateTime? DataRetentionUntil { get; set; }
+        public DateTime? DataDeletionRequested { get; set; }
+        public bool ConsentWithdrawn { get; set; }
+
         public ICollection<Order> Orders { get; } = new List<Order>();
     }
 }

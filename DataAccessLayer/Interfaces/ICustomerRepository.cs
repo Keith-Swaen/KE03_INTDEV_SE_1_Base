@@ -18,5 +18,11 @@ namespace DataAccessLayer.Interfaces
         public void UpdateCustomer(Customer customer);
 
         public void DeleteCustomer(Customer customer);
+
+        // AVG Compliance methoden
+        void UpdateConsent(int customerId, string consentType, bool consentGiven);
+        void RequestDataDeletion(int customerId);
+        void ProcessDataRetention();
+        IEnumerable<Customer> GetCustomersForDataRetention();
     }
 }

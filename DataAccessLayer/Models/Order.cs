@@ -12,5 +12,9 @@ namespace DataAccessLayer.Models
         public Customer Customer { get; set; } = null!;
 
         public ICollection<OrderItem> OrderItems { get; } = new List<OrderItem>();
+
+        // AVG Compliance velden
+        public DateTime? DataRetentionUntil { get; set; }
+        public DateTime? DataDeletionRequested { get; set; }
     }
 }

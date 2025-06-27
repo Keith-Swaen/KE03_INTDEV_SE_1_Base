@@ -81,7 +81,7 @@ namespace KE03_INTDEV_SE_1_Base.Pages
             var nieuweOrder = new Order
             {
                 OrderDate = DateTime.Now,
-                CustomerId = 1 
+                CustomerId = 1
             };
 
             foreach (var item in CartItems)
@@ -89,10 +89,12 @@ namespace KE03_INTDEV_SE_1_Base.Pages
                 var productFromDb = _productRepository.GetProductById(item.Product.Id);
                 if (productFromDb != null)
                 {
-                    for (int i = 0; i < item.Quantity; i++)
+                    nieuweOrder.OrderItems.Add(new OrderItem
                     {
-                        nieuweOrder.Products.Add(productFromDb);
-                    }
+                        Product = productFromDb,
+                        ProductId = productFromDb.Id,
+                        Quantity = item.Quantity
+                    });
                 }
             }
 

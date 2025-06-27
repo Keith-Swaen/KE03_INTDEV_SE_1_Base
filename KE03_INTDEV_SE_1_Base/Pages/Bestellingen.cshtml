@@ -61,13 +61,13 @@ else
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var product in bestelling.Products)
+                                @foreach (var orderItem in bestelling.OrderItems)
                                 {
                                     <tr>
-                                        <td>@product.Name</td>
-                                        <td>1</td> 
-                                        <td>@product.Price.ToString("C")</td>
-                                        <td>@product.Price.ToString("C")</td>
+                                        <td>@orderItem.Product.Name</td>
+                                        <td>@orderItem.Quantity</td>
+                                        <td>@orderItem.Product.Price.ToString("C")</td>
+                                        <td>@((orderItem.Product.Price * orderItem.Quantity).ToString("C"))</td>
                                     </tr>
                                 }
                             </tbody>

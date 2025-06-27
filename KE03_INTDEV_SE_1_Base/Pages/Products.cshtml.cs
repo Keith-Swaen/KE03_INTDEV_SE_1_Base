@@ -42,9 +42,9 @@ namespace KE03_INTDEV_SE_1_Base.Pages
             {
                 products = PriceRange switch
                 {
-                    "low" => products.Where(p => p.Price < 20).ToList(),
-                    "mid" => products.Where(p => p.Price >= 20 && p.Price <= 50).ToList(),
-                    "high" => products.Where(p => p.Price > 50).ToList(),
+                    "low" => products.Where(p => p.Price < 250).ToList(),
+                    "mid" => products.Where(p => p.Price >= 250 && p.Price <= 550).ToList(),
+                    "high" => products.Where(p => p.Price > 550).ToList(),
                     _ => products
                 };
             }

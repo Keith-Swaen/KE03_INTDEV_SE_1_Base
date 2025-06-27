@@ -1,123 +1,150 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home";
 }
 
-<style>
-    body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        background-color: #f9fbfd;
-        color: #334e68;
-    }
-    a {
-        color: #ff6f61;
-        text-decoration: none;
-    }
-    a:hover {
-        text-decoration: underline;
-    }
-    h1, h4, h5 {
-        font-weight: 600;
-    }
-    .card {
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgb(0 0 0 / 0.1);
-        background: white;
-    }
-    .card-header {
-        background: #1c3a6b;
-        color: white;
-        font-weight: 700;
-        border-radius: 12px 12px 0 0;
-        font-size: 1.1rem;
-    }
-    .table thead th {
-        border-bottom: 2px solid #dee2e6;
-        color: #2a4365;
-        font-weight: 600;
-    }
-    .table tbody tr:hover {
-        background-color: #f0f4f8;
-        cursor: pointer;
-        transition: background-color 0.2s ease-in-out;
-    }
-    #searchInput {
-        border-radius: 30px;
-        padding-left: 1.2rem;
-        border: 1.8px solid #dbe2ef;
-        width: 220px;
-        transition: border-color 0.3s ease;
-    }
-    #searchInput:focus {
-        border-color: #ff6f61;
-        outline: none;
-        box-shadow: 0 0 8px #ff6f61aa;
-    }
-    ul {
-        padding-left: 1.3rem;
-    }
-</style>
-
-<div class="container my-5">
-
-    <header class="mb-4">
-        <h1 class="mb-2">Online Bestelsysteem</h1>
-        <p class="text-muted fs-5">Startpunt voor je individuele inleveropdracht 
-            <a href="https://moodle.zuyd.nl/mod/resource/view.php?id=1262065" target="_blank">KE03_INTDEV_SE_1</a>
-        </p>
-    </header>
-
-    <section class="mb-5 p-4 bg-white rounded card">
-        <h4 class="mb-3">Wat ga je maken?</h4>
-        <ul class="mb-0 fs-6" style="color: #486581;">
-            <li>Een gebruiksvriendelijk online bestelsysteem voor klanten.</li>
-            <li>Individuele opdracht met toepassing van HCI-principes (zoals paper prototyping, design principles).</li>
-            <li>Gebruik van .NET Core Razor Pages, HTML, CSS, JS, Bootstrap en jQuery.</li>
-            <li>Versiebeheer met Git en GitHub.</li>
-            <li>Data access layer is meegeleverd, pas deze gerust aan voor jouw project.</li>
-        </ul>
-    </section>
-
-    <section class="card shadow-sm border-0">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Klanten en aantal orders</h5>
-            <input id="searchInput" type="text" class="form-control form-control-sm" placeholder="Zoek klant..." onkeyup="filterTable()" />
+<div class="position-relative bg-dark text-white overflow-hidden w-100"
+     style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 100, 0, 0.6) 100%), url('/img/matrixbackground.jpg') center/cover no-repeat; min-height: 80vh;">
+    
+    <div class="container py-5">
+        <div class="row align-items-center min-vh-80 justify-content-center">
+            <div class="col-lg-10 col-xl-8 text-center">
+                <div class="px-3 px-lg-0">
+                    <h1 class="display-3 display-lg-2 fw-bold mb-4 text-shadow">
+                        Welkom bij <span class="text-success">Matrix Inc</span>
+                    </h1>
+                    <p class="lead fs-4 mb-5 opacity-90">
+                        Ontdek onze collectie van de beste Matrix technologie en apparatuur. 
+                    </p>
+                    <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                        <a href="/Products" class="btn btn-success btn-lg px-5 py-3 fw-semibold shadow-lg">
+                            <i class="bi bi-shop me-2"></i>Bekijk onze producten
+                        </a>
+                        <a href="/Bestellingen" class="btn btn-outline-light btn-lg px-5 py-3 fw-semibold border-2">
+                            <i class="bi bi-list-ul me-2"></i>Bekijk bestellingen
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="table-responsive">
-            <table class="table align-middle mb-0">
-                <thead>
-                    <tr>
-                        <th>Klant</th>
-                        <th>Aantal Orders</th>
-                    </tr>
-                </thead>
-                <tbody id="customersTableBody">
-                    @foreach (var c in Model.Customers)
-                    {
-                        <tr>
-                            <td>@c.Name</td>
-                            <td>@c.Orders.Count</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </section>
-
+    </div>
+    <div class="position-absolute top-0 end-0 d-none d-lg-block opacity-25">
+        <div class="bg-success" style="width: 200px; height: 200px; border-radius: 50%; transform: translate(100px, -100px);"></div>
+    </div>
 </div>
 
-@section Scripts {
-    <script>
-        function filterTable() {
-            const input = document.getElementById("searchInput");
-            const filter = input.value.toLowerCase();
-            const rows = document.querySelectorAll("#customersTableBody tr");
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h2 class="display-5 fw-bold mb-3">Uitgelichte Producten</h2>
+        </div>
+    </div>
+    
+    <div class="row g-4 g-lg-5 mb-5">
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-lg hover-lift">
+                <div class="card-body text-center p-4 p-lg-5 d-flex flex-column">
+                    <h5 class="card-title fw-bold fs-4 mb-3">Nebuchadnezzar</h5>
+                    <p class="card-text text-muted mb-4 flex-grow-1">
+                        Het legendarische schip waarop Neo voor het eerst de echte wereld leerde kennen. 
+                        Volledig uitgerust met alle benodigde technologie.
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <span class="h4 text-success fw-bold mb-0">€ 10.000,00</span>
+                        <a href="/Products" class="btn btn-outline-success px-4">
+                            <i class="bi bi-shop me-2"></i>Naar winkel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-lg hover-lift">
+                <div class="card-body text-center p-4 p-lg-5 d-flex flex-column">
+                    <h5 class="card-title fw-bold fs-4 mb-3">Jack-in Chair</h5>
+                    <p class="card-text text-muted mb-4 flex-grow-1">
+                        Stoel met metalen armen voor het inpluggen in de Matrix via de nekpoort. 
+                        Comfortabel en veilig voor langdurig gebruik.
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <span class="h4 text-success fw-bold mb-0">€ 500,50</span>
+                        <a href="/Products" class="btn btn-outline-success px-4">
+                            <i class="bi bi-shop me-2"></i>Naar winkel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-lg hover-lift">
+                <div class="card-body text-center p-4 p-lg-5 d-flex flex-column">
+                    <h5 class="card-title fw-bold fs-4 mb-3">EMP Device</h5>
+                    <p class="card-text text-muted mb-4 flex-grow-1">
+                        Electro-Magnetic Pulse wapentuig voor gebruik op de schepen van Zion. 
+                        Krachtig en betrouwbaar in elke situatie.
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <span class="h4 text-success fw-bold mb-0">€ 129,99</span>
+                        <a href="/Products" class="btn btn-outline-success px-4">
+                            <i class="bi bi-shop me-2"></i>Naar winkel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-            rows.forEach(row => {
-                const text = row.cells[0].textContent.toLowerCase();
-                row.style.display = text.includes(filter) ? "" : "none";
-            });
-        }
-    </script>
-}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-success text-white py-4">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-people-fill me-3" style="font-size: 1.5rem;"></i>
+                        <h5 class="mb-0 fw-bold">Klanten Overzicht</h5>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="px-4 py-4 fw-bold text-dark border-0">Klant</th>
+                                    <th class="px-4 py-4 fw-bold text-dark border-0 text-center">Aantal Bestellingen</th>
+                                    <th class="px-4 py-4 fw-bold text-dark border-0 text-center">Laatste Bestelling</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var c in Model.Customers)
+                                {
+                                    <tr class="border-bottom">
+                                        <td class="px-4 py-4">
+                                            <span class="fw-bold fs-6 text-dark">@c.Name</span>
+                                        </td>
+                                        <td class="px-4 py-4 text-center">
+                                            <span class="badge bg-success-subtle text-success px-3 py-2 fw-bold fs-6">
+                                                @c.Orders.Count bestellingen
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-4 text-center text-muted">
+                                            @if (c.Orders.Any())
+                                            {
+                                                <span class="fw-semibold">@c.Orders.OrderByDescending(o => o.OrderDate).First().OrderDate.ToString("dd-MM-yyyy")</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">-</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -29,6 +29,14 @@ namespace DataAccessLayer
             };
             context.Customers.AddRange(customers);
 
+            var products = new Product[]
+            {
+                new Product { Name = "Nebuchadnezzar", Description = "Het schip waarop Neo voor het eerst de echte wereld leert kennen", Price = 10000.00m },
+                new Product { Name = "Jack-in Chair", Description = "Stoel met een rugsteun en metalen armen waarin mensen zitten om ingeplugd te worden in de Matrix via een kabel in de nekpoort", Price = 500.50m },
+                new Product { Name = "EMP (Electro-Magnetic Pulse) Device", Description = "Wapentuig op de schepen van Zion", Price = 129.99m }
+            };
+            context.Products.AddRange(products);
+
             var orders = new Order[]
             {
                 new Order { Customer = customers[0], OrderDate = DateTime.Parse("2021-01-01")},
@@ -38,13 +46,17 @@ namespace DataAccessLayer
             };  
             context.Orders.AddRange(orders);
 
-            var products = new Product[]
+            // Voeg OrderItems toe aan de dummy orders
+            var orderItems = new OrderItem[]
             {
-                new Product { Name = "Nebuchadnezzar", Description = "Het schip waarop Neo voor het eerst de echte wereld leert kennen", Price = 10000.00m },
-                new Product { Name = "Jack-in Chair", Description = "Stoel met een rugsteun en metalen armen waarin mensen zitten om ingeplugd te worden in de Matrix via een kabel in de nekpoort", Price = 500.50m },
-                new Product { Name = "EMP (Electro-Magnetic Pulse) Device", Description = "Wapentuig op de schepen van Zion", Price = 129.99m }
+                new OrderItem { Order = orders[0], Product = products[0], ProductId = products[0].Id, Quantity = 1 },
+                new OrderItem { Order = orders[0], Product = products[1], ProductId = products[1].Id, Quantity = 2 },
+                new OrderItem { Order = orders[1], Product = products[2], ProductId = products[2].Id, Quantity = 3 },
+                new OrderItem { Order = orders[2], Product = products[0], ProductId = products[0].Id, Quantity = 1 },
+                new OrderItem { Order = orders[3], Product = products[1], ProductId = products[1].Id, Quantity = 1 },
+                new OrderItem { Order = orders[3], Product = products[2], ProductId = products[2].Id, Quantity = 2 }
             };
-            context.Products.AddRange(products);
+            context.OrderItems.AddRange(orderItems);
 
             var parts = new Part[]
             {

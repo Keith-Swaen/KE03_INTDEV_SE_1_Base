@@ -9,15 +9,20 @@ namespace DataAccessLayer.Repositories
 {
     public class OrderRepository : IOrderRepository
     {
+        // Database context voor toegang tot de bestellingen tabel
         private readonly MatrixIncDbContext _context;
+        
+        // Logger voor het bijhouden van acties en fouten
         private readonly ILogger<OrderRepository> _logger;
 
+        // Constructor die de database context en logger injecteert
         public OrderRepository(MatrixIncDbContext context, ILogger<OrderRepository> logger)
         {
             _context = context;
             _logger = logger;
         }
 
+        // Haalt alle bestellingen op uit de database inclusief klant en bestelde items
         public IEnumerable<Order> GetAllOrders()
         {
             _logger.LogInformation("Retrieving all orders from database");
@@ -30,6 +35,7 @@ namespace DataAccessLayer.Repositories
             return orders;
         }
 
+        // Zoekt een specifieke bestelling op basis van ID inclusief klant en bestelde items
         public Order? GetOrderById(int id)
         {
             _logger.LogInformation("Retrieving order by ID: {OrderId}", id);
@@ -52,6 +58,7 @@ namespace DataAccessLayer.Repositories
             return order;
         }
 
+        // Voegt een nieuwe bestelling toe aan de database
         public void AddOrder(Order order)
         {
             _logger.LogInformation("Adding new order to database. CustomerId: {CustomerId}, Items: {ItemCount}", 
@@ -63,6 +70,7 @@ namespace DataAccessLayer.Repositories
             _logger.LogInformation("Order successfully added to database. OrderId: {OrderId}", order.Id);
         }
 
+        // Werkt de gegevens van een bestaande bestelling bij in de database
         public void UpdateOrder(Order order)
         {
             _logger.LogInformation("Updating order in database. OrderId: {OrderId}", order.Id);
@@ -71,6 +79,7 @@ namespace DataAccessLayer.Repositories
             _logger.LogInformation("Order successfully updated. OrderId: {OrderId}", order.Id);
         }
 
+        // Verwijdert een bestelling uit de database
         public void DeleteOrder(Order order)
         {
             _logger.LogInformation("Deleting order from database. OrderId: {OrderId}", order.Id);

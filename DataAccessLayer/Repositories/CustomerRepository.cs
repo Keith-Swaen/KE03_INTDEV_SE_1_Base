@@ -12,37 +12,46 @@ namespace DataAccessLayer.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
+        // Database context voor toegang tot de klanten tabel
         private readonly MatrixIncDbContext _context;
+        
+        // Logger voor het bijhouden van acties en fouten
         private readonly ILogger<CustomerRepository> _logger;
 
+        // Constructor die de database context en logger injecteert
         public CustomerRepository(MatrixIncDbContext context, ILogger<CustomerRepository> logger)
         {
             _context = context;
             _logger = logger;
         }
 
+        // Voegt een nieuwe klant toe aan de database
         public void AddCustomer(Customer customer)
         {
             _context.Customers.Add(customer);
             _context.SaveChanges();
         }
 
+        // Verwijdert een klant uit de database
         public void DeleteCustomer(Customer customer)
         {
             _context.Customers.Remove(customer);
             _context.SaveChanges();
         }
 
+        // Haalt alle klanten op uit de database inclusief hun bestellingen
         public IEnumerable<Customer> GetAllCustomers()
         {
             return _context.Customers.Include(c => c.Orders);
         }
 
+        // Zoekt een specifieke klant op basis van ID inclusief bestellingen
         public Customer? GetCustomerById(int id)
         {
             return _context.Customers.Include(c => c.Orders).FirstOrDefault(c => c.Id == id);
         }
 
+        // Werkt de gegevens van een bestaande klant bij in de database
         public void UpdateCustomer(Customer customer)
         {
             _context.Customers.Update(customer);
@@ -50,6 +59,7 @@ namespace DataAccessLayer.Repositories
         }
 
         // AVG Compliance methoden
+        // Werkt de toestemming van een klant bij voor gegevensverwerking
         public void UpdateConsent(int customerId, string consentType, bool consentGiven)
         {
             var customer = _context.Customers.Find(customerId);
@@ -57,14 +67,17 @@ namespace DataAccessLayer.Repositories
             {
                 if (consentGiven)
                 {
+                    // Als toestemming wordt gegeven, zet de datum en type
                     customer.ConsentDate = DateTime.Now;
                     customer.ConsentType = consentType;
                     customer.ConsentWithdrawn = false;
-                    customer.DataRetentionUntil = DateTime.Now.AddYears(7); // 7 jaar bewaartermijn voor bestellingen
+                    // Zet bewaartermijn op 7 jaar voor bestellingen
+                    customer.DataRetentionUntil = DateTime.Now.AddYears(7);
                     _logger.LogInformation("Klant {CustomerId} heeft toestemming gegeven voor {ConsentType}", customerId, consentType);
                 }
                 else
                 {
+                    // Als toestemming wordt ingetrokken, markeer voor verwijdering
                     customer.ConsentWithdrawn = true;
                     customer.DataDeletionRequested = DateTime.Now;
                     _logger.LogInformation("Klant {CustomerId} heeft toestemming ingetrokken voor {ConsentType}", customerId, consentType);
@@ -74,6 +87,7 @@ namespace DataAccessLayer.Repositories
             }
         }
 
+        // Markeert een klant voor gegevensverwijdering volgens AVG verzoek
         public void RequestDataDeletion(int customerId)
         {
             var customer = _context.Customers.Find(customerId);
@@ -86,6 +100,7 @@ namespace DataAccessLayer.Repositories
             }
         }
 
+        // Controleert en verwerkt klanten waarvan de bewaartermijn is verstreken
         public void ProcessDataRetention()
         {
             var customersForDeletion = GetCustomersForDataRetention();
@@ -113,6 +128,7 @@ namespace DataAccessLayer.Repositories
             }
         }
 
+        // Haalt alle klanten op waarvan de bewaartermijn is verstreken
         public IEnumerable<Customer> GetCustomersForDataRetention()
         {
             return _context.Customers

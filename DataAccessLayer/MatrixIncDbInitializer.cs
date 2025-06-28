@@ -7,20 +7,24 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
+    // Statische klasse die de database vult met initiële testgegevens
     public static class MatrixIncDbInitializer
     {
+        // Initialiseert de database met dummy data als deze nog leeg is
         public static void Initialize(MatrixIncDbContext context)
         {
-            // Look for any customers.
+            // Controleert of er al klanten in de database staan
             if (context.Customers.Any())
             {
-                return;   // DB has been seeded
+                return;   // Database is al gevuld met testgegevens
             }
 
             // TODO: Hier moet ik nog wat namen verzinnen die betrekking hebben op de matrix.
             // - Denk aan de m3 boutjes, moertjes en ringetjes.
             // - Denk aan namen van schepen
             // - Denk aan namen van vliegtuigen            
+            
+            // Maakt dummy klanten aan met Matrix-thema namen
             var customers = new Customer[]
             {
                 new Customer { Name = "Neo", Address = "123 Elm St" , Active=true},
@@ -29,6 +33,7 @@ namespace DataAccessLayer
             };
             context.Customers.AddRange(customers);
 
+            // Maakt dummy producten aan met Matrix-thema namen en beschrijvingen
             var products = new Product[]
             {
                 new Product { Name = "Nebuchadnezzar", Description = "Het schip waarop Neo voor het eerst de echte wereld leert kennen", Price = 10000.00m },
@@ -37,6 +42,7 @@ namespace DataAccessLayer
             };
             context.Products.AddRange(products);
 
+            // Maakt dummy bestellingen aan voor de verschillende klanten
             var orders = new Order[]
             {
                 new Order { Customer = customers[0], OrderDate = DateTime.Parse("2021-01-01")},
@@ -46,7 +52,7 @@ namespace DataAccessLayer
             };  
             context.Orders.AddRange(orders);
 
-            // Voeg OrderItems toe aan de dummy orders
+            // Voegt bestelde items toe aan de dummy bestellingen met verschillende hoeveelheden
             var orderItems = new OrderItem[]
             {
                 new OrderItem { Order = orders[0], Product = products[0], ProductId = products[0].Id, Quantity = 1 },
@@ -58,6 +64,7 @@ namespace DataAccessLayer
             };
             context.OrderItems.AddRange(orderItems);
 
+            // Maakt dummy onderdelen aan die in producten kunnen zitten
             var parts = new Part[]
             {
                 new Part { Name = "Tandwiel", Description = "Overdracht van rotatie in bijvoorbeeld de motor of luikmechanismen"},
@@ -67,8 +74,10 @@ namespace DataAccessLayer
             };
             context.Parts.AddRange(parts);
 
+            // Slaat alle wijzigingen op in de database
             context.SaveChanges();
 
+            // Zorgt ervoor dat de database wordt aangemaakt als deze nog niet bestaat
             context.Database.EnsureCreated();
         }
     }

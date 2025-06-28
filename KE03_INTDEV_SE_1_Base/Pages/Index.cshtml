@@ -40,7 +40,7 @@
             <h2 class="display-5 fw-bold mb-3">Uitgelichte Producten</h2>
         </div>
     </div>
-    
+
     <div class="row g-4 g-lg-5 mb-5">
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 border-0 shadow-lg hover-lift">
@@ -107,18 +107,18 @@
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <div class="table-responsive">
+        <div class="table-responsive">
                         <table class="table table-hover mb-0">
                             <thead class="bg-light">
-                                <tr>
+                    <tr>
                                     <th class="px-4 py-4 fw-bold text-dark border-0">Klant</th>
                                     <th class="px-4 py-4 fw-bold text-dark border-0 text-center">Aantal Bestellingen</th>
                                     <th class="px-4 py-4 fw-bold text-dark border-0 text-center">Laatste Bestelling</th>
-                                </tr>
-                            </thead>
+                    </tr>
+                </thead>
                             <tbody>
-                                @foreach (var c in Model.Customers)
-                                {
+                    @foreach (var c in Model.Customers)
+                    {
                                     <tr class="border-bottom">
                                         <td class="px-4 py-4">
                                             <span class="fw-bold fs-6 text-dark">@c.Name</span>
@@ -138,13 +138,13 @@
                                                 <span class="text-muted">-</span>
                                             }
                                         </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
                 </div>
             </div>
         </div>
     </div>
-</div> 
+</div>

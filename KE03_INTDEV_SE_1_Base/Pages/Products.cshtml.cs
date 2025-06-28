@@ -87,10 +87,10 @@ namespace KE03_INTDEV_SE_1_Base.Pages
             var sessionData = HttpContext.Session.GetString("Cart");
             var cart = string.IsNullOrEmpty(sessionData)
                 ? new List<CartItem>()
-                : JsonSerializer.Deserialize<List<CartItem>>(sessionData);
+                : JsonSerializer.Deserialize<List<CartItem>>(sessionData) ?? new List<CartItem>();
 
             // Controleert of het product al in de winkelwagen zit
-            var existingItem = cart!.FirstOrDefault(p => p.Product.Id == productId);
+            var existingItem = cart.FirstOrDefault(p => p.Product.Id == productId);
             if (existingItem != null)
             {
                 // Verhoogt de hoeveelheid als het product al in de winkelwagen zit

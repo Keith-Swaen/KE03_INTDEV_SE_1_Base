@@ -103,26 +103,3 @@
         </div>
     }
 </div>
-
-@section Scripts {
-    <script>
-        // Wacht tot de pagina is geladen en toont eventuele berichten
-        window.addEventListener('DOMContentLoaded', () => {
-            // Controleert of er een succesbericht is en toont het
-            var successToastEl = document.getElementById('successToast');
-            if (successToastEl && successToastEl.textContent.trim().length > 0) {
-                successToastEl.style.display = 'flex';
-                var successToast = new bootstrap.Toast(successToastEl, { delay: 3000 });
-                successToast.show();
-            }
-
-            // Controleert of er een foutmelding is en toont het
-            var errorToastEl = document.getElementById('errorToast');
-            if (errorToastEl && errorToastEl.textContent.trim().length > 0) {
-                errorToastEl.style.display = 'flex';
-                var errorToast = new bootstrap.Toast(errorToastEl, { delay: 3000 });
-                errorToast.show();
-            }
-        });
-    </script>
-}

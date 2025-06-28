@@ -14,11 +14,9 @@ namespace DataAccessLayer.Models
         [Required]
         public int Id { get; set; }
 
-        // Naam van de klant, verplicht veld
         [Required]
         public string Name { get; set; }
 
-        // Adres van de klant, verplicht veld
         [Required]
         public string Address { get; set; }
 

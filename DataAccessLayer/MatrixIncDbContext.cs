@@ -6,7 +6,7 @@ namespace DataAccessLayer
     // Database context klasse die de verbinding met de SQLite database beheert
     public class MatrixIncDbContext : DbContext
     {
-        // Constructor die de database opties ontvangt (connection string, etc.)
+        // Constructor die de database opties ontvangt, bijvoorbeeld connection string
         public MatrixIncDbContext(DbContextOptions<MatrixIncDbContext> options) : base(options)
         {
         }
@@ -21,21 +21,21 @@ namespace DataAccessLayer
         // Configureert de relaties tussen de verschillende entiteiten in de database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Relatie: Een klant kan meerdere bestellingen hebben, elke bestelling hoort bij één klant
+            // Relatie: Een klant kan meerdere bestellingen hebben, elke bestelling hoort bij een klant
             modelBuilder.Entity<Customer>()
                 .HasMany(c => c.Orders)
                 .WithOne(o => o.Customer)
                 .HasForeignKey(o => o.CustomerId)
                 .IsRequired();
 
-            // Relatie: Een bestelling kan meerdere bestelde items hebben, elk item hoort bij één bestelling
+            // Relatie: Een bestelling kan meerdere bestelde items hebben, elk item hoort bij een bestelling
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderItems)
                 .WithOne(oi => oi.Order)
                 .HasForeignKey(oi => oi.OrderId)
                 .IsRequired();
 
-            // Relatie: Een besteld item hoort bij één product
+            // Relatie: Een besteld item hoort bij een product
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Product)
                 .WithMany()

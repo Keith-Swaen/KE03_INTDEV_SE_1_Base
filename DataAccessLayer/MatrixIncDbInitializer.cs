@@ -24,7 +24,7 @@ namespace DataAccessLayer
             // - Denk aan namen van schepen
             // - Denk aan namen van vliegtuigen            
             
-            // Maakt dummy klanten aan met Matrix-thema namen
+            // Maakt dummy klanten aan 
             var customers = new Customer[]
             {
                 new Customer { Name = "Neo", Address = "123 Elm St" , Active=true},
@@ -33,7 +33,7 @@ namespace DataAccessLayer
             };
             context.Customers.AddRange(customers);
 
-            // Maakt dummy producten aan met Matrix-thema namen en beschrijvingen
+            // Maakt dummy producten aan 
             var products = new Product[]
             {
                 new Product { Name = "Nebuchadnezzar", Description = "Het schip waarop Neo voor het eerst de echte wereld leert kennen", Price = 10000.00m },

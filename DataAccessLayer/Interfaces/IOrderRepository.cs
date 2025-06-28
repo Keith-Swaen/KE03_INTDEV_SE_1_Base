@@ -15,13 +15,10 @@ namespace DataAccessLayer.Interfaces
         // Zoekt een specifieke bestelling op basis van het ID, geeft null terug als niet gevonden
         public Order? GetOrderById(int id);
 
-        // Voegt een nieuwe bestelling toe aan de database
         public void AddOrder(Order order);
 
-        // Werkt de gegevens van een bestaande bestelling bij in de database
         public void UpdateOrder(Order order);
 
-        // Verwijdert een bestelling uit de database
         public void DeleteOrder(Order order);
     }
 }

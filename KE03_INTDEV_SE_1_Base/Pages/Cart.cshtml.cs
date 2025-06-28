@@ -111,7 +111,7 @@ namespace KE03_INTDEV_SE_1_Base.Pages
             }
 
             // Controleert of klant toestemming heeft gegeven voor gegevensverwerking (AVG wet)
-            var customer = _customerRepository.GetCustomerById(1); // Hardcoded voor demo
+            var customer = _customerRepository.GetCustomerById(1); // Hardcoded 
             if (customer == null || customer.ConsentWithdrawn)
             {
                 _logger.LogWarning("Checkout geprobeerd zonder geldige AVG toestemming. KlantId: 1");
@@ -127,7 +127,7 @@ namespace KE03_INTDEV_SE_1_Base.Pages
             {
                 OrderDate = DateTime.Now,
                 CustomerId = 1,
-                DataRetentionUntil = DateTime.Now.AddYears(7) // 7 jaar bewaartermijn volgens AVG
+                DataRetentionUntil = DateTime.Now.AddYears(7) 
             };
 
             // Voegt alle items uit de winkelwagen toe aan de bestelling

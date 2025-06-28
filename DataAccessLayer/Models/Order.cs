@@ -5,13 +5,10 @@ namespace DataAccessLayer.Models
 {
     public class Order
     {
-        // Unieke identifier voor de bestelling in de database
         public int Id { get; set; }
         
-        // Datum waarop de bestelling is geplaatst
         public DateTime OrderDate { get; set; }
 
-        // ID van de klant die de bestelling heeft geplaatst
         public int CustomerId { get; set; }
         
         // Navigatie property naar de klant die bij deze bestelling hoort

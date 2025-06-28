@@ -15,13 +15,10 @@ namespace DataAccessLayer.Interfaces
         // Zoekt een specifieke klant op basis van het ID, geeft null terug als niet gevonden
         public Customer? GetCustomerById(int id);
 
-        // Voegt een nieuwe klant toe aan de database
         public void AddCustomer(Customer customer);
 
-        // Werkt de gegevens van een bestaande klant bij in de database
         public void UpdateCustomer(Customer customer);
 
-        // Verwijdert een klant uit de database
         public void DeleteCustomer(Customer customer);
 
         // AVG Compliance methoden

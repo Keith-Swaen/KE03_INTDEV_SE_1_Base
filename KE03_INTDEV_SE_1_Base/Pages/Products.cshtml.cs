@@ -9,7 +9,7 @@ using System.Text.Json;
 
 namespace KE03_INTDEV_SE_1_Base.Pages
 {
-    // Beheert de producten pagina met zoek- en filterfunctionaliteit en winkelwagen toevoeging
+    // Beheert de producten pagina met zoek en filterfunctionaliteit en winkelwagen toevoeging
     public class ProductsModel : PageModel
     {
         // Database toegang voor productgegevens

@@ -8,13 +8,10 @@ namespace DataAccessLayer.Models
 {
     public class Part
     {
-        // Unieke identifier voor het onderdeel in de database
         public int Id { get; set; }
 
-        // Naam van het onderdeel
         public string Name { get; set; }
 
-        // Beschrijving van het onderdeel
         public string Description { get; set; }
 
         // Lijst van alle producten die dit onderdeel gebruiken

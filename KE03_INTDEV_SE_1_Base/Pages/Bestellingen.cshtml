@@ -7,6 +7,7 @@
 <div class="container py-5">
     <h1 class="text-success">Bestellingen</h1>
 
+@* Controleert of er bestellingen zijn om te tonen *@
 @if (!Model.Bestellingen.Any())
 {
     <div class="alert alert-info">Er zijn geen bestellingen.</div>
@@ -23,6 +24,7 @@ else
             </tr>
         </thead>
         <tbody>
+            @* Loopt door alle bestellingen om ze in de tabel te tonen *@
             @foreach (var bestelling in Model.Bestellingen)
             {
                 <tr>
@@ -39,8 +41,10 @@ else
         </tbody>
     </table>
 
+    @* Maakt voor elke bestelling een modal popup met de details *@
     @foreach (var bestelling in Model.Bestellingen)
     {
+        // Maakt unieke IDs voor elke modal
         var modalId = $"orderModal_{bestelling.Id}";
         var modalLabelId = $"orderModalLabel_{bestelling.Id}";
 
@@ -62,13 +66,14 @@ else
                                 </tr>
                             </thead>
                             <tbody>
-                                    @foreach (var orderItem in bestelling.OrderItems)
+                                @* Loopt door alle bestelde items om ze in de modal te tonen *@
+                                @foreach (var orderItem in bestelling.OrderItems)
                                 {
                                     <tr>
-                                            <td>@orderItem.Product.Name</td>
-                                            <td>@orderItem.Quantity</td>
-                                            <td>@orderItem.Product.Price.ToString("C")</td>
-                                            <td>@((orderItem.Product.Price * orderItem.Quantity).ToString("C"))</td>
+                                        <td>@orderItem.Product.Name</td>
+                                        <td>@orderItem.Quantity</td>
+                                        <td>@orderItem.Product.Price.ToString("C")</td>
+                                        <td>@((orderItem.Product.Price * orderItem.Quantity).ToString("C"))</td>
                                     </tr>
                                 }
                             </tbody>
@@ -83,7 +88,9 @@ else
 
 @section Scripts {
     <script>
+        // Wacht tot de pagina volledig is geladen
         $(document).ready(function () {
+            // Maakt een DataTable aan voor de bestellingen tabel met Nederlandse taal
             var table = $('#bestellingenTable').DataTable({
                 pageLength: 5,
                 lengthChange: false,
@@ -105,6 +112,7 @@ else
                     "<'row'<'col-sm-12'tr>>"
             });
 
+            // Voegt een custom dropdown toe voor het aantal rijen per pagina
             $('.custom-length-info').html(`
                 <span class="me-2">Toont</span>
                 <select id="pageLengthSelect" class="form-select form-select-sm" style="width: auto; display: inline-block;">
@@ -116,6 +124,7 @@ else
                 <span class="ms-2">bestellingen.</span>
             `);
 
+            // Luistert naar veranderingen in de dropdown en past het aantal rijen aan
             $('#pageLengthSelect').on('change', function () {
                 var val = parseInt($(this).val());
                 table.page.len(val).draw();

@@ -47,6 +47,7 @@
         </aside>
 
         <section class="col-md-9">
+            @* Controleert of er producten zijn om te tonen na het filteren *@
             @if (!Model.Products.Any())
             {
                 <div class="alert alert-info">Geen producten gevonden.</div>
@@ -54,6 +55,7 @@
             else
             {
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    @* Loopt door alle gefilterde producten om ze te tonen *@
                     @foreach (var product in Model.Products)
                     {
                         <div class="col">
@@ -82,8 +84,7 @@
 </div>
 
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
-    <div id="cartToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true"
-         style="background-color: #198754; color: white;">
+    <div id="cartToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #198754; color: white;">
         <div class="d-flex">
             <div class="toast-body">
                 Product succesvol toegevoegd aan winkelmand!
@@ -95,16 +96,19 @@
 
 @section Scripts {
     <script>
+        // Voegt event listeners toe aan alle Toevoegen knoppen
         document.querySelectorAll('.btn-add-to-cart').forEach(button => {
             button.addEventListener('click', async (e) => {
                 e.preventDefault();
                 const form = e.target.closest('form');
                 const formData = new FormData(form);
 
+                // Haalt het antiforgery token op voor veiligheid
                 const tokenInput = form.querySelector('input[name="__RequestVerificationToken"]');
                 const token = tokenInput ? tokenInput.value : '';
 
                 try {
+                    // Stuurt een AJAX verzoek om het product aan de winkelwagen toe te voegen
                     const response = await fetch(form.action, {
                         method: 'POST',
                         body: formData,
@@ -114,6 +118,7 @@
                     });
 
                     if (response.ok) {
+                        // Toont een succesbericht als het product is toegevoegd
                         const toastEl = document.getElementById('cartToast');
                         const toast = new bootstrap.Toast(toastEl);
                         toast.show();

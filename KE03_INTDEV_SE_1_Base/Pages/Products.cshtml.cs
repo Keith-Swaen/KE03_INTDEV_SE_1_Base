@@ -9,30 +9,41 @@ using System.Text.Json;
 
 namespace KE03_INTDEV_SE_1_Base.Pages
 {
+    // Beheert de producten pagina met zoek- en filterfunctionaliteit en winkelwagen toevoeging
     public class ProductsModel : PageModel
     {
+        // Database toegang voor productgegevens
         private readonly IProductRepository _productRepository;
+        
+        // Voor het opslaan van acties en fouten
         private readonly ILogger<ProductsModel> _logger;
 
+        // Constructor die de benodigde onderdelen ontvangt
         public ProductsModel(IProductRepository productRepository, ILogger<ProductsModel> logger)
         {
             _productRepository = productRepository;
             _logger = logger;
         }
 
+        // Lijst van producten die op de pagina worden getoond, wel gefilterd
         public IEnumerable<Product> Products { get; set; } = new List<Product>();
 
+        // Zoekterm voor het filteren van producten, gebonden aan URL parameter
         [BindProperty(SupportsGet = true)]
         public string? SearchTerm { get; set; }
 
+        // Prijsfilter voor het filteren van producten, gebonden aan URL parameter
         [BindProperty(SupportsGet = true)]
         public string? PriceRange { get; set; }
 
+        // Wordt aangeroepen wanneer de producten pagina wordt geladen
         public void OnGet()
         {
+            // Haalt alle producten op uit de database
             var products = _productRepository.GetAllProducts();
             var initialCount = products.Count();
 
+            // Filtert producten op basis van zoekterm 
             if (!string.IsNullOrWhiteSpace(SearchTerm))
             {
                 products = products
@@ -43,6 +54,7 @@ namespace KE03_INTDEV_SE_1_Base.Pages
                     SearchTerm, products.Count(), initialCount);
             }
 
+            // Filtert producten op basis van prijsbereik
             if (!string.IsNullOrWhiteSpace(PriceRange))
             {
                 products = PriceRange switch
@@ -59,8 +71,10 @@ namespace KE03_INTDEV_SE_1_Base.Pages
             Products = products;
         }
 
+        // Voegt een product toe aan de winkelwagen via AJAX
         public IActionResult OnPostAddToCart(int productId, int quantity)
         {
+            // Controleert of het product bestaat en de hoeveelheid geldig is
             var product = _productRepository.GetProductById(productId);
             if (product == null || quantity < 1)
             {
@@ -69,32 +83,41 @@ namespace KE03_INTDEV_SE_1_Base.Pages
                 return BadRequest();
             }
 
+            // Laadt de huidige winkelwagen uit het geheugen
             var sessionData = HttpContext.Session.GetString("Cart");
             var cart = string.IsNullOrEmpty(sessionData)
                 ? new List<CartItem>()
                 : JsonSerializer.Deserialize<List<CartItem>>(sessionData);
 
+            // Controleert of het product al in de winkelwagen zit
             var existingItem = cart!.FirstOrDefault(p => p.Product.Id == productId);
             if (existingItem != null)
             {
+                // Verhoogt de hoeveelheid als het product al in de winkelwagen zit
                 existingItem.Quantity += quantity;
                 _logger.LogInformation("Updated cart item quantity. Product: '{ProductName}', New Quantity: {Quantity}", 
                     product.Name, existingItem.Quantity);
             }
             else
             {
+                // Voegt het product toe als het nog niet in de winkelwagen zit
                 cart.Add(new CartItem { Product = product, Quantity = quantity });
                 _logger.LogInformation("Added new item to cart. Product: '{ProductName}', Quantity: {Quantity}", 
                     product.Name, quantity);
             }
 
+            // Slaat de bijgewerkte winkelwagen op in het geheugen
             HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cart));
             return new JsonResult(new { success = true });
         }
 
+        // Model klasse voor items in de winkelwagen
         public class CartItem
         {
+            // Het product dat in de winkelwagen zit
             public Product Product { get; set; } = new();
+            
+            // Aantal van dit product
             public int Quantity { get; set; }
         }
     }

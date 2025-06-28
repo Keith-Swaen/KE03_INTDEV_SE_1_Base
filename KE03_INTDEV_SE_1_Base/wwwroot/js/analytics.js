@@ -1,40 +1,48 @@
-// Analytics tracking with GDPR compliance
+// Analytics tracking met AVG compliance voor het bijhouden van gebruikersgedrag
 class WebsiteAnalytics {
+    // Constructor die de analytics class initialiseert
     constructor() {
+        // Geeft aan of de gebruiker toestemming heeft gegeven voor analytics
         this.consentGiven = false;
+        // Array om alle analytics data op te slaan
         this.analyticsData = [];
         this.init();
     }
 
+    // Initialiseert de analytics tracking
     init() {
-        // Check if analytics consent is given
+        // Controleert of analytics toestemming is gegeven
         this.checkConsent();
         
+        // Als toestemming is gegeven, start de tracking
         if (this.consentGiven) {
             this.setupTracking();
         }
     }
 
+    // Controleert of de gebruiker toestemming heeft gegeven voor analytics
     checkConsent() {
-        // In a real application, this would check the database
-        // For now, we'll use localStorage as a simple example
+        // In een echte applicatie zou dit de database controleren
+        // Voor nu gebruik ik localStorage als voorbeeld
         const consent = localStorage.getItem('analyticsConsent');
         this.consentGiven = consent === 'true';
     }
 
+    // Stelt alle tracking functionaliteit in als toestemming is gegeven
     setupTracking() {
         if (!this.consentGiven) return;
 
-        // Track page views
+        // Volgt paginaweergaven
         this.trackPageView();
 
-        // Track user interactions
+        // Volgt gebruikersinteracties
         this.trackProductViews();
         this.trackSearchBehavior();
         this.trackCartActions();
         this.trackFilterUsage();
     }
 
+    // Volgt wanneer een gebruiker een pagina bekijkt
     trackPageView() {
         const pageData = {
             type: 'pageview',
@@ -49,8 +57,9 @@ class WebsiteAnalytics {
         this.sendAnalyticsData(pageData);
     }
 
+    // Volgt wanneer gebruikers productdetails bekijken
     trackProductViews() {
-        // Track when users view product details
+        // Volgt wanneer gebruikers op producttitels klikken
         document.addEventListener('click', (e) => {
             if (e.target.closest('.card-title')) {
                 const productName = e.target.textContent;
@@ -64,11 +73,13 @@ class WebsiteAnalytics {
         });
     }
 
+    // Volgt zoekgedrag van gebruikers
     trackSearchBehavior() {
-        // Track search terms
+        // Volgt zoektermen die gebruikers invoeren
         const searchInput = document.getElementById('searchTerm');
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {
+                // Alleen tracken als er meer dan 2 karakters zijn ingevoerd
                 if (e.target.value.length > 2) {
                     const searchData = {
                         type: 'search',
@@ -81,8 +92,9 @@ class WebsiteAnalytics {
         }
     }
 
+    // Volgt acties in de winkelwagen
     trackCartActions() {
-        // Track add to cart actions
+        // Volgt wanneer producten aan de winkelwagen worden toegevoegd
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('btn-add-to-cart')) {
                 const productCard = e.target.closest('.card');
@@ -100,8 +112,9 @@ class WebsiteAnalytics {
         });
     }
 
+    // Volgt gebruik van filters
     trackFilterUsage() {
-        // Track price filter usage
+        // Volgt wanneer gebruikers prijsfilters gebruiken
         document.addEventListener('change', (e) => {
             if (e.target.name === 'PriceRange') {
                 const filterData = {
@@ -115,51 +128,54 @@ class WebsiteAnalytics {
         });
     }
 
+    // Verzendt analytics data, alleen als toestemming is gegeven
     sendAnalyticsData(data) {
         if (!this.consentGiven) return;
 
-        // In a real application, this would send to a server
-        // For now, we'll store locally and log
+        // In een echte applicatie zou dit naar een server worden verzonden
+        // Voor nu sla ik het lokaal op en log ik het
         this.analyticsData.push(data);
         
-        // Log to console for demonstration
+        // Log naar console voor demonstratie
         console.log('Analytics Event:', data);
         
-        // Store in localStorage (in real app, send to server)
+        // Sla op in localStorage
         localStorage.setItem('analyticsData', JSON.stringify(this.analyticsData));
     }
 
-    // Method to get analytics data (for admin purposes)
+    // Methode om analytics data op te halen zodat admins kunnen zien wat gebruikers doen
     getAnalyticsData() {
         return this.analyticsData;
     }
 
-    // Method to clear analytics data (for GDPR compliance)
+    // Methode om analytics data te wissen wanneer gebruiker dat vraagt volgens AVG wet
     clearAnalyticsData() {
         this.analyticsData = [];
         localStorage.removeItem('analyticsData');
-        console.log('Analytics data cleared for GDPR compliance');
+        console.log('Analytics data gewist voor AVG compliance');
     }
 
-    // Method to update consent
+    // Methode om toestemming bij te werken
     updateConsent(given) {
         this.consentGiven = given;
         localStorage.setItem('analyticsConsent', given.toString());
         
+        // Als toestemming wordt gegeven, start tracking
         if (given) {
             this.setupTracking();
         } else {
+            // Als toestemming wordt ingetrokken, wis alle data
             this.clearAnalyticsData();
         }
     }
 }
 
-// Initialize analytics when DOM is loaded
+// Start analytics tracking nadat alle HTML elementen zijn geladen op de pagina
 document.addEventListener('DOMContentLoaded', () => {
     window.websiteAnalytics = new WebsiteAnalytics();
 });
 
-// Export for use in other scripts
+// Export voor gebruik in andere scripts
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = WebsiteAnalytics;
 } 

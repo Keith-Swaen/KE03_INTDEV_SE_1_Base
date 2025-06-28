@@ -11,15 +11,19 @@ using Microsoft.Extensions.Logging;
 
 namespace KE03_INTDEV_SE_1_Base.Pages
 {
+    // Beheert de winkelwagen functionaliteit inclusief toevoegen, bijwerken, verwijderen en bestellen
     public class CartModel : PageModel
     {
+        // Database toegang voor verschillende gegevens
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
         private readonly ILogger<CartModel> _logger;
         private readonly ICustomerRepository _customerRepository;
 
+        // Lijst van items in de winkelwagen
         public List<CartItem> CartItems { get; set; } = new();
 
+        // Constructor die de benodigde onderdelen ontvangt
         public CartModel(IOrderRepository orderRepository, IProductRepository productRepository, ILogger<CartModel> logger, ICustomerRepository customerRepository)
         {
             _orderRepository = orderRepository;
@@ -28,12 +32,14 @@ namespace KE03_INTDEV_SE_1_Base.Pages
             _customerRepository = customerRepository;
         }
 
+        // Wordt aangeroepen wanneer de winkelwagen pagina wordt geladen
         public void OnGet()
         {
             LoadCart();
             _logger.LogInformation("Cart page loaded. Items in cart: {ItemCount}", CartItems.Count);
         }
 
+        // Laadt de winkelwagen gegevens uit het geheugen
         private void LoadCart()
         {
             var sessionData = HttpContext.Session.GetString("Cart");
@@ -43,11 +49,13 @@ namespace KE03_INTDEV_SE_1_Base.Pages
             }
         }
 
+        // Slaat de winkelwagen gegevens op in het geheugen
         private void SaveCart()
         {
             HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(CartItems));
         }
 
+        // Verwijdert een product uit de winkelwagen
         public IActionResult OnPostRemoveItem(int productId)
         {
             LoadCart();
@@ -66,6 +74,7 @@ namespace KE03_INTDEV_SE_1_Base.Pages
             return RedirectToPage();
         }
 
+        // Werkt de hoeveelheid van een product in de winkelwagen bij
         public IActionResult OnPostUpdateQuantity(int productId, int newQuantity)
         {
             LoadCart();
@@ -88,10 +97,12 @@ namespace KE03_INTDEV_SE_1_Base.Pages
             return RedirectToPage();
         }
 
+        // Verwerkt de bestelling en maakt een nieuwe order aan
         public IActionResult OnPostCheckout()
         {
             LoadCart();
 
+            // Controleert of de winkelwagen niet leeg is
             if (!CartItems.Any())
             {
                 _logger.LogWarning("Checkout attempted with empty cart");
@@ -99,7 +110,7 @@ namespace KE03_INTDEV_SE_1_Base.Pages
                 return RedirectToPage();
             }
 
-            // AVG Compliance: Controleer of klant toestemming heeft gegeven
+            // Controleert of klant toestemming heeft gegeven voor gegevensverwerking (AVG wet)
             var customer = _customerRepository.GetCustomerById(1); // Hardcoded voor demo
             if (customer == null || customer.ConsentWithdrawn)
             {
@@ -111,13 +122,15 @@ namespace KE03_INTDEV_SE_1_Base.Pages
             _logger.LogInformation("Starting checkout process. Items in cart: {ItemCount}, Total items: {TotalItems}", 
                 CartItems.Count, CartItems.Sum(i => i.Quantity));
 
+            // Maakt een nieuwe bestelling aan
             var nieuweOrder = new Order
             {
                 OrderDate = DateTime.Now,
                 CustomerId = 1,
-                DataRetentionUntil = DateTime.Now.AddYears(7) // 7 years for legal compliance
+                DataRetentionUntil = DateTime.Now.AddYears(7) // 7 jaar bewaartermijn volgens AVG
             };
 
+            // Voegt alle items uit de winkelwagen toe aan de bestelling
             foreach (var item in CartItems)
             {
                 var productFromDb = _productRepository.GetProductById(item.Product.Id);
@@ -140,11 +153,13 @@ namespace KE03_INTDEV_SE_1_Base.Pages
 
             try
             {
+                // Slaat de bestelling op in de database
                 _orderRepository.AddOrder(nieuweOrder);
                 var totalAmount = nieuweOrder.OrderItems.Sum(oi => oi.Product.Price * oi.Quantity);
                 _logger.LogInformation("Order successfully placed. OrderId: {OrderId}, Total Amount: {TotalAmount}, Items: {ItemCount}", 
                     nieuweOrder.Id, totalAmount, nieuweOrder.OrderItems.Count);
                 
+                // Leegt de winkelwagen na succesvolle bestelling
                 CartItems.Clear();
                 SaveCart();
 
@@ -160,9 +175,13 @@ namespace KE03_INTDEV_SE_1_Base.Pages
         }
     }
 
+    // Model klasse voor items in de winkelwagen
     public class CartItem
     {
+        // Het product dat in de winkelwagen zit
         public Product Product { get; set; } = default!;
+        
+        // Aantal van dit product
         public int Quantity { get; set; }
     }
 }

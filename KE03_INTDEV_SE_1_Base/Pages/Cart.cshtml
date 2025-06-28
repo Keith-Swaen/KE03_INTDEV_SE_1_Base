@@ -7,6 +7,7 @@
 <div class="container py-5">
     <h1 class="mb-4 text-success">Jouw Winkelmand</h1>
 
+    @* Controleert of de winkelwagen leeg is *@
     @if (!Model.CartItems.Any())
     {
         <div class="alert alert-warning text-center fs-5">Je winkelmand is leeg.</div>
@@ -26,6 +27,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @* Loopt door alle items in de winkelwagen *@
                     @foreach (var item in Model.CartItems)
                     {
                         <tr class="align-middle" style="transition: background-color 0.15s ease;">
@@ -67,6 +69,7 @@
             <div class="card shadow-sm" style="max-width: 350px; width: 100%;">
                 <div class="card-body">
                     <h5 class="card-title fw-bold">Totaal</h5>
+                    @* Berekent het totaalbedrag van alle items in de winkelwagen *@
                     <p class="fs-4 text-success fw-semibold">€ @string.Format("{0:0.00}", Model.CartItems.Sum(i => i.Product.Price * i.Quantity))</p>
                     <form method="post" asp-page-handler="Checkout">
                         <button type="submit" class="btn btn-success btn-lg w-100">Bestellen</button>
@@ -78,6 +81,7 @@
 </div>
 
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+    @* Toont een succesbericht als er een is *@
     @if (TempData["Message"] != null)
     {
         <div id="successToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" style="display:none; background-color:#198754; color:white;">
@@ -88,6 +92,7 @@
         </div>
     }
 
+    @* Toont een foutmelding als er een is *@
     @if (TempData["Error"] != null)
     {
         <div id="errorToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" style="display:none; background-color:#dc3545; color:white;">
@@ -101,7 +106,9 @@
 
 @section Scripts {
     <script>
+        // Wacht tot de pagina is geladen en toont eventuele berichten
         window.addEventListener('DOMContentLoaded', () => {
+            // Controleert of er een succesbericht is en toont het
             var successToastEl = document.getElementById('successToast');
             if (successToastEl && successToastEl.textContent.trim().length > 0) {
                 successToastEl.style.display = 'flex';
@@ -109,6 +116,7 @@
                 successToast.show();
             }
 
+            // Controleert of er een foutmelding is en toont het
             var errorToastEl = document.getElementById('errorToast');
             if (errorToastEl && errorToastEl.textContent.trim().length > 0) {
                 errorToastEl.style.display = 'flex';

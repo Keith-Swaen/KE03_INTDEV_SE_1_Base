@@ -117,6 +117,7 @@
                     </tr>
                 </thead>
                             <tbody>
+                    @* Loopt door alle klanten om hun bestellingsinformatie te tonen *@
                     @foreach (var c in Model.Customers)
                     {
                                     <tr class="border-bottom">
@@ -129,6 +130,7 @@
                                             </span>
                                         </td>
                                         <td class="px-4 py-4 text-center text-muted">
+                                            @* Controleert of de klant bestellingen heeft en toont de laatste *@
                                             @if (c.Orders.Any())
                                             {
                                                 <span class="fw-semibold">@c.Orders.OrderByDescending(o => o.OrderDate).First().OrderDate.ToString("dd-MM-yyyy")</span>
